@@ -143,7 +143,7 @@ func main() {
 				ep := <-deliveryChan
 				mp := ep.(*kafka.Message)
 				if mp.TopicPartition.Error != nil {
-					fmt.Printf("Delivery failed: %v\n", mp.TopicPartition.Error, err)
+					fmt.Printf("Delivery failed: %v\n %s", mp.TopicPartition.Error, err)
 					lib.Linenotify("Delivery failed: %v\n")
 				} else {
 					fmt.Printf("Producer : " + str + "\n")
