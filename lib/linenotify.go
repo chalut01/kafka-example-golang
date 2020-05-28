@@ -13,6 +13,10 @@ func Linenotify(msgs string) string {
 	viper.SetDefault("app.linetoken", "OoeNUGioVM5rzvnDQvXOpOIqqVD2vUkpxRyGeeRIZAF")
 	token := viper.GetString("app.linetoken") // EDIT THIS
 	c := linenotify.New()
-	c.Notify(token, msg, "", "", nil)
-	return "line Noti"
+	resp, err := c.Notify(token, msg, "", "", nil)
+
+	if err != nil {
+		return err.Error()
+	}
+	return resp.Message
 }
