@@ -32,7 +32,7 @@ func callapi(raws string) string {
 	resp, err := client.Do(req)
 	if err != nil {
 		panic(err)
-		lib.Linenotify("")
+		lib.Linenotify("test")
 	}
 	defer resp.Body.Close()
 	//    fmt.Println("response Status:", resp.Status)
