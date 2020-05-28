@@ -1,31 +1,30 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"os"
 	"os/signal"
 	"strings"
 	"syscall"
 
-	"gopkg.in/confluentinc/confluent-kafka-go.v1/kafka"
-	//	"encoding/json"
-	"bytes"
-	"io/ioutil"
-	"net/http"
-
 	"./lib"
 
 	"github.com/spf13/viper"
+	"gopkg.in/confluentinc/confluent-kafka-go.v1/kafka"
 )
 
 func callapi(raws string) string {
 	raw := raws
-	url := "http://api.hashify.net/hash/md5/hex"
+	url := "api.hashify.net/hash/highway-64/base32"
 	//    fmt.Println("URL:>", url)
 	//    fmt.Println("check raw :>", raw)
 	var jsonStr = []byte(raw)
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
 	req.Header.Set("X-Custom-Header", "myvalue")
+	req.Header.Set("X-Hashify-Key", "random")
 	req.Header.Set("Content-Type", "text/plain; charset=utf-8")
 
 	client := &http.Client{}
