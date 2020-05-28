@@ -163,6 +163,6 @@ func main() {
 	fmt.Printf("Closing consumer\n")
 	c.Close()
 	fmt.Printf("Closing producer\n")
-	close(deliveryChan)
 	lib.Linenotify("ExitConvert")
+	close(deliveryChan)
 }

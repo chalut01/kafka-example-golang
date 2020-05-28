@@ -7,10 +7,10 @@ import (
 )
 
 func Linenotify(msgs string) string {
-	msg := "message=" + msgs
+	msg := "" + msgs
 	msg = strings.Replace(msg, " ", "-", -1)
-	token := "Bearer OoeNUGioVM5rzvnDQvXOpOIqqVD2vUkpxRyGeeRIZAF" // EDIT THIS
+	token := "OoeNUGioVM5rzvnDQvXOpOIqqVD2vUkpxRyGeeRIZAF" // EDIT THIS
 	c := linenotify.New()
-	c.Notify(token, "msg", "", "", nil)
-
+	c.Notify(token, msg, "", "", nil)
+	return "line Noti"
 }
