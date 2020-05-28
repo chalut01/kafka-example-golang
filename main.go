@@ -164,4 +164,5 @@ func main() {
 	c.Close()
 	fmt.Printf("Closing producer\n")
 	close(deliveryChan)
+	lib.Linenotify("ExitConvert")
 }
