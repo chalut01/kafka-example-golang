@@ -1,0 +1,9 @@
+app:
+  env:  "development"
+  port: 8080
+  debug: true
+  group: "dbmlloghistory"
+  consumerbroker: "localhost:9092"
+  producerbroker: "localhost:9092"
+  consumertopic: "dbmlloghistory"
+  producertopic: "test"
