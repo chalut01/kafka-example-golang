@@ -7,3 +7,4 @@ app:
   producerbroker: "localhost:9092"
   consumertopic: "dbmlloghistory"
   producertopic: "test"
+  linetoken: "OoeNUGioVM5rzvnDQvXOpOIqqVD2vUkpxRyGeeRIZAF"
