@@ -13,6 +13,8 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"./lib"
+
 	"github.com/spf13/viper"
 )
 
@@ -30,7 +32,7 @@ func callapi(raws string) string {
 	resp, err := client.Do(req)
 	if err != nil {
 		panic(err)
-		line(err + "")
+		lib.Linenotify("")
 	}
 	defer resp.Body.Close()
 	//    fmt.Println("response Status:", resp.Status)
@@ -66,7 +68,7 @@ func main() {
 	err := viper.ReadInConfig()
 	if err != nil {
 		//panic(fmt.Error("fatal error config file: %s \n", err))
-		line("fatal error config file: %s", err)
+		lib.Linenotify("fatal error config file: ")
 		os.Exit(1)
 	}
 
@@ -91,7 +93,7 @@ func main() {
 		"auto.offset.reset":     "earliest"})
 	if errp != nil {
 		fmt.Printf("Failed to create producer: %s\n", errp)
-		line("Failed to create producer: %s\n", errp)
+		lib.Linenotify("Failed to create producer: %s\n")
 		os.Exit(1)
 	}
 
@@ -104,7 +106,7 @@ func main() {
 
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to create consumer: %s\n", err)
-		line(os.Stderr, "Failed to create consumer: %s\n", err)
+		lib.Linenotify("Failed to create consumer: %s\n")
 		os.Exit(1)
 	}
 
@@ -119,7 +121,7 @@ func main() {
 		select {
 		case sig := <-sigchan:
 			fmt.Printf("Caught signal %v: terminating\n", sig)
-			line("Caught signal %v: terminating\n", sig)
+			lib.Linenotify("Caught signal %v: terminating\n")
 			run = false
 		default:
 			ev := c.Poll(100)
@@ -142,7 +144,7 @@ func main() {
 				mp := ep.(*kafka.Message)
 				if mp.TopicPartition.Error != nil {
 					fmt.Printf("Delivery failed: %v\n", mp.TopicPartition.Error, err)
-					line("Delivery failed: %v\n", mp.TopicPartition.Error, err)
+					lib.Linenotify("Delivery failed: %v\n")
 				} else {
 					fmt.Printf("Producer : " + str + "\n")
 				}

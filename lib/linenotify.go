@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func line(msgs string) string {
+func Linenotify(msgs string) string {
 	msg := msgs
 	msg = strings.Replace(msg, " ", "-", -1)
 	url := "https://notify-api.line.me/api/notify"
