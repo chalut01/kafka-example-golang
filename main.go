@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -18,26 +17,24 @@ import (
 
 func callapi(raws string) string {
 	raw := raws
-	url := "api.hashify.net/hash/highway-64/base32"
-	//    fmt.Println("URL:>", url)
-	//    fmt.Println("check raw :>", raw)
-	var jsonStr = []byte(raw)
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
-	req.Header.Set("X-Custom-Header", "myvalue")
-	req.Header.Set("X-Hashify-Key", "random")
-	req.Header.Set("Content-Type", "text/plain; charset=utf-8")
-
+	url := "http://api.hashify.net/hash/highway-64/base32"
+	method := "POST"
 	client := &http.Client{}
-	resp, err := client.Do(req)
+	req, err := http.NewRequest(method, url, strings.NewReader(raw))
+
 	if err != nil {
-		panic(err)
-		lib.Linenotify("test")
+		fmt.Println(err)
 	}
-	defer resp.Body.Close()
-	//    fmt.Println("response Status:", resp.Status)
-	//    fmt.Println("response Headers:", resp.Header)
-	body, _ := ioutil.ReadAll(resp.Body)
-	//    fmt.Println("response Body:", string(body))
+	req.Header.Add("Content-Type", "text/plain; charset=utf-8")
+	req.Header.Add("X-Hashify-Key", "random")
+
+	res, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer res.Body.Close()
+	body, err := ioutil.ReadAll(res.Body)
+
 	rstring := string(body)
 	return rstring
 }
