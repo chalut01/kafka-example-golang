@@ -173,7 +173,7 @@ func main() {
 	fmt.Printf("Closing consumer\n")
 	c.Close()
 	fmt.Printf("Closing producer\n")
-	line := lib.Linenotify("ExitConvert")
-	fmt.Printf("\n" + line + "\n")
+	//line := lib.Linenotify("ExitConvert")
+	//fmt.Printf("\n" + line + "\n")
 	close(deliveryChan)
 }
