@@ -35,10 +35,15 @@ func callapi(raws string) string {
 	defer res.Body.Close()
 	body, err := ioutil.ReadAll(res.Body)
 
+	_, span := trace.StartSpan(r.Context(), "callapi")
+	defer span.End()
+
 	rstring := string(body)
 	return rstring
 }
 func convertstr(strin string) string {
+	_, span := trace.StartSpan(r.Context(), "convertstr")
+	defer span.End()
 	str := strin
 	fmt.Printf("convert : " + str + "\n")
 	str = strings.Replace(str, "\":[", "\":{", -1)
@@ -54,6 +59,7 @@ func convertstr(strin string) string {
 }
 
 func main() {
+	Lib.RegisterZipkin()
 	viper.SetConfigName("default") // config file name without extension
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(".")
