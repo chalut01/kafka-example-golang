@@ -39,14 +39,9 @@ func callapi(raws string, ctx context.Context) string {
 	rstring := string(body)
 	return rstring
 }
-func convertstr(strin string) string {
-	ctx, span := trace.StartSpan(context.Background(), "convertstr")
-        traceId := fmt.Sprintf("", span.SpanContext().TraceID)
-        spanId := fmt.Sprintf("", span.SpanContext().SpanID)
-	id := traceId+" : "+spanId
-	id = strings.Replace(id, "%!(EXTRA", "", -1)
-        fmt.Println(id)
-    defer span.End()
+func convertstr(strin string, ctx context.Context) string {
+	_, span := trace.StartSpan(ctx, "convertstr")
+        defer span.End()
 	
 
 	str := strin
@@ -140,9 +135,16 @@ func main() {
 
 			switch e := ev.(type) {
 			case *kafka.Message:
+				ctx, span := trace.StartSpan(context.Background(), "consumer")
+				traceId := fmt.Sprintf("", span.SpanContext().TraceID)
+				spanId := fmt.Sprintf("", span.SpanContext().SpanID)
+				id := traceId+" : "+spanId
+				id = strings.Replace(id, "%!(EXTRA", "", -1)
+				fmt.Println(id)
+				defer span.End()
 
 				str := string(e.Value)
-				str = convertstr(str)
+				str = convertstr(str,ctx)
 
 				err := p.Produce(&kafka.Message{
 					TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
@@ -151,6 +153,8 @@ func main() {
 				}, deliveryChan)
 				ep := <-deliveryChan
 				mp := ep.(*kafka.Message)
+				_, span := trace.StartSpan(ctx, "producer")
+				defer span.End()
 				if mp.TopicPartition.Error != nil {
 					fmt.Printf("Delivery failed: %v\n %s", mp.TopicPartition.Error, err)
 					lib.Linenotify("Delivery failed: %v\n")
