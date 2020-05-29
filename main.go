@@ -23,22 +23,17 @@ func callapi(raws string, ctx context.Context) string {
 	raw := raws
 	url := "http://api.hashify.net/hash/md4/hex"
 	method := "POST"
-	client := &http.Client{}
-	req, err := http.NewRequest(method, url, strings.NewReader(raw))
-
-	if err != nil {
-		fmt.Println(err)
+	payload := strings.NewReader(raw)
+	client := &http.Client {
 	}
-	req.Header.Add("Content-Type", "text/plain; charset=utf-8")
-	req.Header.Add("X-Hashify-Key", "random")
-
+	req, err := http.NewRequest(method, url, payload)
+  
+	if err != nil {
+	  fmt.Println(err)
+	}
 	res, err := client.Do(req)
-	if err != nil {
-		fmt.Println(err)
-	}
 	defer res.Body.Close()
 	body, err := ioutil.ReadAll(res.Body)
-
 	rstring := string(body)
 	return rstring
 }
