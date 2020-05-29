@@ -21,7 +21,8 @@ func callapi(raws string, ctx context.Context) string {
 	_, span := trace.StartSpan(ctx, "callapi")
         defer span.End()
 	raw := raws
-	url := "http://api.hashify.net/hash/md4/hex"
+	fmt.Println(raw)
+	url := "https://api.hashify.net/hash/highway-128/hex"
 	method := "POST"
 	payload := strings.NewReader(raw)
 	client := &http.Client {
@@ -31,6 +32,8 @@ func callapi(raws string, ctx context.Context) string {
 	if err != nil {
 	  fmt.Println(err)
 	}
+	req.Header.Add("Content-Type", "text/plain; charset=utf-8")
+  	req.Header.Add("X-Hashify-Key", "random")
 	res, err := client.Do(req)
 	defer res.Body.Close()
 	body, err := ioutil.ReadAll(res.Body)
