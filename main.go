@@ -21,7 +21,6 @@ func callapi(raws string, ctx context.Context) string {
 	_, span := trace.StartSpan(ctx, "callapi")
         defer span.End()
 	raw := raws
-	fmt.Println(raw)
 	url := "https://api.hashify.net/hash/highway-128/hex"
 	method := "POST"
 	payload := strings.NewReader(raw)
@@ -47,7 +46,7 @@ func convertstr(strin string) string {
 	id := traceId+" : "+spanId
 	id = strings.Replace(id, "%!(EXTRA", "", -1)
         fmt.Println(id)
-        defer span.End()
+    defer span.End()
 	
 
 	str := strin
