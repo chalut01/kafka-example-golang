@@ -50,6 +50,7 @@ func convertstr(strin string) string {
 	
 
 	str := strin
+	fmt.Println("BEGIN")
 	fmt.Printf("convert : " + str + "\n")
 	str = strings.Replace(str, "\":[", "\":{", -1)
 	str = strings.Replace(str, "]}", "}}", -1)
@@ -155,6 +156,7 @@ func main() {
 					lib.Linenotify("Delivery failed: %v\n")
 				} else {
 					fmt.Printf("Producer : " + str + "\n")
+					fmt.Println("END")
 				}
 
 			case kafka.Error:
