@@ -9,7 +9,7 @@ import(
 	zipkinHTTP "github.com/openzipkin/zipkin-go/reporter/http"
 )
 func RegisterZipkin(){
-	localEndpoint, err := openzipkin.NewEndpoint("golangsvc", "192.168.1.61:8080") 
+	localEndpoint, err := openzipkin.NewEndpoint("Syniti", "localhost") 
 	if err != nil { 
 			log.Fatalf("Failed to create Zipkin exporter: %v", err)
 	} 
