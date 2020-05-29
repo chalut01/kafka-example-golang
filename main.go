@@ -13,6 +13,7 @@ import (
 
 	"github.com/spf13/viper"
 	"gopkg.in/confluentinc/confluent-kafka-go.v1/kafka"
+	"go.opencensus.io/trace"
 
 )
 
@@ -36,6 +37,7 @@ func callapi(raws string) string {
 	defer res.Body.Close()
 	body, err := ioutil.ReadAll(res.Body)
 
+	r := http.Request
 	_, span := trace.StartSpan(r.Context(), "callapi")
 	defer span.End()
 
@@ -43,6 +45,7 @@ func callapi(raws string) string {
 	return rstring
 }
 func convertstr(strin string) string {
+	r := http.Request
 	_, span := trace.StartSpan(r.Context(), "convertstr")
 	defer span.End()
 	str := strin
