@@ -44,8 +44,14 @@ func callapi(raws string, ctx context.Context) string {
 }
 func convertstr(strin string) string {
 	ctx, span := trace.StartSpan(context.Background(), "convertstr")
+        traceId := fmt.Sprintf("", span.SpanContext().TraceID)
+        spanId := fmt.Sprintf("", span.SpanContext().SpanID)
+	id := traceId+" : "+spanId
+	id = strings.Replace(id, "%!(EXTRA", "", -1)
+        fmt.Println(id)
         defer span.End()
-	fmt.Println(Info(ctx, "convertstr"))
+	
+
 	str := strin
 	fmt.Printf("convert : " + str + "\n")
 	str = strings.Replace(str, "\":[", "\":{", -1)
