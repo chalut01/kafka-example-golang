@@ -21,7 +21,7 @@ func callapi(raws string, ctx context.Context) string {
 	_, span := trace.StartSpan(ctx, "callapi")
         defer span.End()
 	raw := raws
-	url := "http://api.hashify.net/hash/highway-64/base32"
+	url := "http://api.hashify.net/hash/md4/hex"
 	method := "POST"
 	client := &http.Client{}
 	req, err := http.NewRequest(method, url, strings.NewReader(raw))
