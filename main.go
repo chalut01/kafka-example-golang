@@ -13,6 +13,9 @@ import (
 
 	"github.com/spf13/viper"
 	"gopkg.in/confluentinc/confluent-kafka-go.v1/kafka"
+	openzipkin "github.com/openzipkin/zipkin-go"
+	zipkinHTTP "github.com/openzipkin/zipkin-go/reporter/http"
+	"contrib.go.opencensus.io/exporter/zipkin"
 )
 
 func callapi(raws string) string {
