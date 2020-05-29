@@ -8,7 +8,7 @@ import (
 	"os/signal"
 	"strings"
 	"syscall"
-
+	"context"
 	"./lib"
 
 	"github.com/spf13/viper"
@@ -17,7 +17,9 @@ import (
 
 )
 
-func callapi(raws string) string {
+func callapi(raws string, ctx context.Context) string {
+	_, span := trace.StartSpan(ctx, "callapi")
+        defer span.End()
 	raw := raws
 	url := "http://api.hashify.net/hash/highway-64/base32"
 	method := "POST"
@@ -37,17 +39,13 @@ func callapi(raws string) string {
 	defer res.Body.Close()
 	body, err := ioutil.ReadAll(res.Body)
 
-	r := http.Request
-	_, span := trace.StartSpan(r.Context(), "callapi")
-	defer span.End()
-
 	rstring := string(body)
 	return rstring
 }
 func convertstr(strin string) string {
-	r := http.Request
-	_, span := trace.StartSpan(r.Context(), "convertstr")
-	defer span.End()
+	ctx, span := trace.StartSpan(context.Background(), "convertstr")
+        defer span.End()
+	fmt.Println(Info(ctx, "convertstr"))
 	str := strin
 	fmt.Printf("convert : " + str + "\n")
 	str = strings.Replace(str, "\":[", "\":{", -1)
@@ -58,12 +56,13 @@ func convertstr(strin string) string {
 	str = strings.Replace(str, "Operation\":\"U", "Operation\":\"Update", -1)
 	str = strings.Replace(str, "Operation\":\"D", "Operation\":\"Delete", -1)
 	str = strings.Replace(str, "Operation\":\"C", "Operation\":\"Clear", -1)
-	str = callapi(str)
+	str = callapi(str, ctx)
 	return str
 }
 
 func main() {
 	lib.RegisterZipkin()
+
 	viper.SetConfigName("default") // config file name without extension
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(".")
