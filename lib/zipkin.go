@@ -1,16 +1,8 @@
 package lib
 import(
-	"os"
-	"log"
-	"math/rand"
-	"net/http"
-	"strings"
-	"time"
 
-	"contrib.go.opencensus.io/exporter/prometheus"
+	"log"
 	"contrib.go.opencensus.io/exporter/zipkin"
-	"go.opencensus.io/plugin/ochttp"
-	"go.opencensus.io/stats/view"
 	"go.opencensus.io/trace"
 
 	openzipkin "github.com/openzipkin/zipkin-go"
